@@ -31,8 +31,13 @@ func Authorize(e *casbin.Enforcer, r RoleGetter) buffalo.MiddlewareFunc {
 
 			actionName := ""
 			if muxHandler.HandlerName != "" {
-				splitString := strings.Split(muxHandler.HandlerName, "/actions.")
-				actionName = splitString[len(splitString)-1]
+				ss := strings.Split(muxHandler.HandlerName, "/actions.")
+				actionName = ss[len(ss)-1]
+
+				if strings.Contains(actionName, ".") {
+					ssd := strings.Split(muxHandler.HandlerName, ".")
+					actionName = ssd[len(ssd)-1]
+				}
 			}
 
 			res, err := e.Enforce(role, resourceName, actionName)
