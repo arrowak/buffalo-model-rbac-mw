@@ -1,4 +1,4 @@
-module buffalo-model-rbac-mw
+module github.com/arrowak/buffalo-model-rbac-mw
 
 go 1.14
 
