@@ -1,7 +1,9 @@
 package modelRbac
 
 import (
+	"github.com/gorilla/mux"
 	"net/http"
+	"strings"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/gobuffalo/buffalo"
@@ -20,7 +22,19 @@ func New(e *casbin.Enforcer, r RoleGetter) buffalo.MiddlewareFunc {
 				return errors.WithStack(err)
 			}
 
-			res, err := e.Enforce(role, c.Request().URL.Path, c.Request().Method)
+			muxHandler := mux.CurrentRoute(c.Request()).GetHandler().(*buffalo.RouteInfo)
+
+			resourceName := ""
+			if muxHandler.ResourceName != "" {
+				resourceName = strings.Split(muxHandler.ResourceName, "Resources")[0]
+			}
+
+			actionName := ""
+			if muxHandler.HandlerName != "" {
+				actionName = strings.Split(muxHandler.HandlerName, "/actions.")[1]
+			}
+
+			res, err := e.Enforce(role, resourceName, actionName)
 			if err != nil {
 				return errors.WithStack(err)
 			}
