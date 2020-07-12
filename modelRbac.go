@@ -14,7 +14,7 @@ import (
 type RoleGetter func(buffalo.Context) (string, error)
 
 // New enables cashbin rbac
-func New(e *casbin.Enforcer, r RoleGetter) buffalo.MiddlewareFunc {
+func Authorize(e *casbin.Enforcer, r RoleGetter) buffalo.MiddlewareFunc {
 	return func(next buffalo.Handler) buffalo.Handler {
 		return func(c buffalo.Context) error {
 			role, err := r(c)
