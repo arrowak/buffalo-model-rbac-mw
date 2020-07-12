@@ -26,7 +26,7 @@ func Authorize(e *casbin.Enforcer, r RoleGetter) buffalo.MiddlewareFunc {
 
 			resourceName := ""
 			if muxHandler.ResourceName != "" {
-				resourceName = strings.Split(muxHandler.ResourceName, "Resources")[0]
+				resourceName = strings.Split(muxHandler.ResourceName, "Resource")[0]
 			}
 
 			actionName := ""
